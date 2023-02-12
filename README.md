@@ -28,14 +28,7 @@ vcstool2 invokes the native VCS client with the requested command (i.e. *diff*).
 
 ## Which VCS types are supported?
 
-Vcstool2 supports:
-
-- [Git](http://git-scm.com)
-- [Mercurial](http://git-scm.comhttp://mercurial.selenic.com)
-- [Subversion](http://subversion.apache.org)
-- [Bazaar](http://bazaar.canonical.com/en/)
-
-The support for Mercurial, Subversion and Bazaar will be dropped in the future.
+Vcstool2 supports [Git](http://git-scm.com) only.
 
 ## How to use vcstool2?
 
