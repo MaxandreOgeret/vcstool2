@@ -1,0 +1,4 @@
+[flake8]
+extend-ignore = A003,D100,D101,D102,D103,D104,D105,D107
+exclude = .git,__pycache__,docs/source/conf.py,old,build,dist,venv
+import-order-style=google
