@@ -5,26 +5,23 @@ from vcstool import __version__
 install_requires = ['PyYAML', 'setuptools']
 
 setup(
-    name='vcstool',
+    name='vcstool2',
     version=__version__,
     install_requires=install_requires,
     packages=find_packages(),
     author='Dirk Thomas',
     author_email='web@dirk-thomas.net',
-    maintainer='Dirk Thomas',
-    maintainer_email='web@dirk-thomas.net',
-    url='https://github.com/dirk-thomas/vcstool',
-    download_url='http://download.ros.org/downloads/vcstool/',
+    maintainer='Maxandre Ogeret',
+    maintainer_email='MaxandreOgeret@users.noreply.github.com',
+    url='https://github.com/MaxandreOgeret/vcstool2',
     classifiers=['Intended Audience :: Developers',
                  'License :: OSI Approved :: Apache Software License',
                  'Programming Language :: Python',
                  'Topic :: Software Development :: Version Control',
                  'Topic :: Utilities'],
-    description='vcstool provides a command line tool to invoke vcs commands '
-        'on multiple repositories.',
-    long_description='\
-vcstool enables batch commands on multiple different vcs repositories. \
-Currently it supports git, hg, svn and bzr.',
+    description='vcstool provides a command line tool to invoke git commands on multiple repositories.',
+    long_description='vcstool2 enables batch commands on multiple different git repositories. It is a fork of Dirk '
+                     'Thomas\' vcstool',
     license='Apache License, Version 2.0',
     data_files=[
         ('share/vcstool-completion', [
