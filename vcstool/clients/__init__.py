@@ -1,22 +1,6 @@
-vcstool_clients = []
+from .git import GitClient
 
-try:
-    from .git import GitClient
-    vcstool_clients.append(GitClient)
-except ImportError:
-    pass
-
-try:
-    from .tar import TarClient
-    vcstool_clients.append(TarClient)
-except ImportError:
-    pass
-
-try:
-    from .zip import ZipClient
-    vcstool_clients.append(ZipClient)
-except ImportError:
-    pass
+vcstool_clients = [GitClient]
 
 _client_types = [c.type for c in vcstool_clients]
 if len(_client_types) != len(set(_client_types)):
