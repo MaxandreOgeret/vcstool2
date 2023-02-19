@@ -6,11 +6,6 @@ import unittest
 
 class TestOptions(unittest.TestCase):
 
-    def test_clients(self):
-        output = run_command(['--clients'])
-        expected = get_expected_output('clients')
-        self.assertEqual(output, expected)
-
     def test_commands(self):
         output = run_command(['--commands'])
         expected = get_expected_output('commands')

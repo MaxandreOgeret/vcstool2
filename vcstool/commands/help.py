@@ -26,12 +26,6 @@ def main(args=None, stdout=None, stderr=None):
     parser = get_parser()
     ns = parser.parse_args(args)
 
-    if ns.clients:
-        print('The available VCS clients are:')
-        for client in vcstool_clients:
-            print('  ' + client.type)
-        return 0
-
     if ns.commands:
         print(' '.join([cmd.command for cmd in vcstool_commands]))
         return 0
@@ -56,9 +50,6 @@ def get_parser(add_help=True):
         'command', metavar='<command>', nargs='?',
         help='The available commands: ' + ', '.join(
             [cmd.command for cmd in vcstool_commands]))
-    group.add_argument(
-        '--clients', action='store_true', default=False,
-        help='Show the available VCS clients')
     group.add_argument(
         '--commands', action='store_true', default=False,
         help='Output the available commands for auto-completion')
