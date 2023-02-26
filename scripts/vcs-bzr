@@ -1,7 +1,0 @@
-#!/usr/bin/env python3
-
-import sys
-
-from vcstool.commands.custom import bzr_main
-
-sys.exit(bzr_main() or 0)

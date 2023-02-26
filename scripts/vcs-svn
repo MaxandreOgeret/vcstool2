@@ -1,7 +1,0 @@
-#!/usr/bin/env python3
-
-import sys
-
-from vcstool.commands.custom import svn_main
-
-sys.exit(svn_main() or 0)

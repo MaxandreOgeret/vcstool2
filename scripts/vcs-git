@@ -1,7 +1,0 @@
-#!/usr/bin/env python3
-
-import sys
-
-from vcstool.commands.custom import git_main
-
-sys.exit(git_main() or 0)

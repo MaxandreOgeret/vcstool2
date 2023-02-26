@@ -48,7 +48,7 @@ class TestCommands(unittest.TestCase):
     def test_custom(self):
         output = run_command(
             'custom',
-            args=['--git', '--args', 'describe', '--abbrev=0', '--tags'],
+            args=['--args', 'describe', '--abbrev=0', '--tags'],
             subfolder='immutable')
         expected = get_expected_output('custom_describe')
         self.assertEqual(output, expected)

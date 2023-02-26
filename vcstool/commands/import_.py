@@ -5,7 +5,7 @@ import sys
 import urllib.request as request
 
 from vcstool import __version__ as vcstool_version
-from vcstool.clients import vcstool_clients
+from vcstool.clients import GitClient
 from vcstool.clients.vcs_base import run_command
 from vcstool.executor import ansi
 from vcstool.executor import execute_jobs
@@ -153,21 +153,7 @@ def generate_jobs(repos, args):
     jobs = []
     for path, repo in repos.items():
         path = os.path.join(args.path, path)
-        clients = [c for c in vcstool_clients if c.type == repo['type']]
-        if not clients:
-            from vcstool.clients.none import NoneClient
-            job = {
-                'client': NoneClient(path),
-                'command': None,
-                'cwd': path,
-                'output':
-                    "Repository type '%s' is not supported" % repo['type'],
-                'returncode': NotImplemented
-            }
-            jobs.append(job)
-            continue
-
-        client = clients[0](path)
+        client = GitClient(path)
         command = ImportCommand(
             args, repo['url'],
             str(repo['version']) if 'version' in repo else None,

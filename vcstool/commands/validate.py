@@ -1,7 +1,7 @@
 import argparse
 import sys
 
-from vcstool.clients import vcstool_clients
+from vcstool.clients import GitClient
 from vcstool.commands.import_ import get_repositories
 from vcstool.executor import ansi
 from vcstool.executor import execute_jobs
@@ -39,21 +39,7 @@ def get_parser():
 def generate_jobs(repos, args):
     jobs = []
     for path, repo in repos.items():
-        clients = [c for c in vcstool_clients if c.type == repo['type']]
-        if not clients:
-            from vcstool.clients.none import NoneClient
-            job = {
-                'client': NoneClient(path),
-                'command': None,
-                'cwd': path,
-                'output':
-                    "Repository type '%s' is not supported" % repo['type'],
-                'returncode': NotImplemented
-            }
-            jobs.append(job)
-            continue
-
-        client = clients[0](path)
+        client = GitClient(path)
         args.path = None  # expected to be present
         command = ValidateCommand(
             args, repo['url'],
