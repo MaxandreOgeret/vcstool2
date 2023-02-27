@@ -28,7 +28,7 @@ vcstool2 invokes the native VCS client with the requested command (i.e. *diff*).
 
 ## Which VCS types are supported?
 
-Vcstool2 supports [Git](http://git-scm.com) only.
+Vcstool2 supports [Git](http://git-scm.com) repositories only.
 
 ## How to use vcstool2?
 
@@ -51,7 +51,7 @@ vcs status /path/to/several/repos /path/to/other/repos /path/to/single/repo
 Vcstool2 can export and import all the information required to reproduce the versions of a set of repositories. Vcstool2
 uses a simple [YAML](http://www.yaml.org/) format to encode this information. This format includes a root
 key `repositories` under which each local repository is described by a dictionary keyed by its relative path. Each of
-these dictionaries contains keys `type`, `url`, and `version`. If the `version` key is omitted the default branch is
+these dictionaries contains keys `url`, and `version`. If the `version` key is omitted the default branch is
 being used.
 
 This results in something similar to the following for a set of two repositories
@@ -70,7 +70,7 @@ repositories:
 
 ### Export set of repositories
 
-The `vcs export` command outputs the path, vcs type, URL and version
+The `vcs export` command outputs the path, URL and version
 information for all repositories in [YAML](http://www.yaml.org/) format.
 The output is usually piped to a file:
 
@@ -96,13 +96,7 @@ previously exported file is piped in:
 vcs import < my.repos
 ```
 
-The `import` command also supports input in the
-[rosinstall file format](http://www.ros.org/doc/independent/api/rosinstall/html/rosinstall_file_format.html).
 Beside passing a file path the command also supports passing a URL.
-
-Only for this command vcstool2 supports the pseudo clients `tar` and`zip` which fetch a tarball / zipfile from a URL and
-unpack its content. For those two types the `version` key is optional. If specified only entries from the archive which
-are in the subfolder specified by the version value are being extracted.
 
 ### Validate repositories file
 
@@ -139,15 +133,12 @@ to a single worker.
 
 ### Run arbitrary commands
 
-The `vcs custom` command enables to pass arbitrary user-specified arguments to the vcs invocation. The set of
-repositories to operate on can optionally be restricted by the type:
+The `vcs custom` command enables to pass arbitrary user-specified arguments to the git executable.
 
 ```
-vcs custom --git --args log --oneline -n 10
+vcs custom --args log --oneline -n 10
 ```
 
-If the command should work on multiple repositories make sure to pass only generic arguments which work for all of these
-repository types.
 
 # How to install vcstool2?
 
