@@ -1,9 +1,16 @@
 import os
+from typing import List
 
-from . import vcstool_clients
+from vcstool.clients import GitClient
 
 
-def find_repositories(paths, nested=False):
+def find_repositories(paths: list, nested: bool = False) -> List[GitClient]:
+    """
+    Recursively search for Git repositories in a directory and its subdirectories.
+    :param paths: List of directory paths to search.
+    :param nested: Whether to search nested directories.
+    :return: List of GitClient objects representing Git repositories found.
+    """
     repos = []
     visited = []
     for path in paths:
@@ -12,14 +19,19 @@ def find_repositories(paths, nested=False):
 
 
 def _find_repositories(path, repos, visited, nested=False):
+    """
+    :param path: Directory path to search.
+    :param repos: List of GitClient objects representing Git repositories found.
+    :param visited: List of visited directory paths to avoid duplicates.
+    :param nested: Whether to search nested directories. Default is False.
+    """
     abs_path = os.path.abspath(path)
     if abs_path in visited:
         return
     visited.append(abs_path)
 
-    client = get_vcs_client(path)
-    if client:
-        repos.append(client)
+    if GitClient.is_repository(path):
+        repos.append(GitClient(path))
         if not nested:
             return
 
@@ -32,10 +44,3 @@ def _find_repositories(path, repos, visited, nested=False):
         if not os.path.isdir(subpath):
             continue
         _find_repositories(subpath, repos, visited, nested=nested)
-
-
-def get_vcs_client(path):
-    for client_class in vcstool_clients:
-        if client_class.is_repository(path):
-            return client_class(path)
-    return None

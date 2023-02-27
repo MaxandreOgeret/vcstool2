@@ -10,18 +10,21 @@ from .remotes import RemotesCommand
 from .status import StatusCommand
 from .validate import ValidateCommand
 
-vcstool_commands = []
-vcstool_commands.append(BranchCommand)
-vcstool_commands.append(CustomCommand)
-vcstool_commands.append(DiffCommand)
-vcstool_commands.append(ExportCommand)
-vcstool_commands.append(ImportCommand)
-vcstool_commands.append(LogCommand)
-vcstool_commands.append(PullCommand)
-vcstool_commands.append(PushCommand)
-vcstool_commands.append(RemotesCommand)
-vcstool_commands.append(StatusCommand)
-vcstool_commands.append(ValidateCommand)
+vcstool_commands = [
+    BranchCommand,
+    CustomCommand,
+    DiffCommand,
+    ExportCommand,
+    ImportCommand,
+    LogCommand,
+    PullCommand,
+    PushCommand,
+    RemotesCommand,
+    StatusCommand,
+    ValidateCommand
+]
+
+__all__ = [cmd.__name__ for cmd in vcstool_commands]
 
 _commands = [c.command for c in vcstool_commands]
 if len(_commands) != len(set(_commands)):

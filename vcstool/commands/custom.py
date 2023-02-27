@@ -1,7 +1,6 @@
 import argparse
 import sys
 
-from vcstool.clients import vcstool_clients
 from vcstool.crawler import find_repositories
 from vcstool.executor import execute_jobs
 from vcstool.executor import generate_jobs
@@ -26,14 +25,6 @@ class CustomCommand(Command):
 def get_parser():
     parser = argparse.ArgumentParser(
         description='Run a custom command', prog='vcs custom')
-    group = parser.add_argument_group(
-        '"custom" command parameters restricting the repositories')
-    for client_type in [
-        c.type for c in vcstool_clients if c.type not in ['tar']
-    ]:
-        group.add_argument(
-            '--' + client_type, action='store_true', default=False,
-            help="Run command on '%s' repositories" % client_type)
     group = parser.add_argument_group('"custom" command parameters')
     group.add_argument(
         '--args', required=True, nargs='*', help='Arbitrary arguments passed '
@@ -61,23 +52,10 @@ def main(args=None, stdout=None, stderr=None):
     args = parser.parse_args(args[0:index])
     args.args = client_args
 
-    # check if any client type is specified
-    any_client_type = False
-    for client in vcstool_clients:
-        if client.type in args and args.__dict__[client.type]:
-            any_client_type = True
-            break
-    # if no client type is specified enable all client types
-    if not any_client_type:
-        for client in vcstool_clients:
-            if client.type in args:
-                args.__dict__[client.type] = True
-
     command = CustomCommand(args)
 
     # filter repositories by specified client types
     clients = find_repositories(command.paths, nested=command.nested)
-    clients = [c for c in clients if c.type in args and args.__dict__[c.type]]
 
     if command.output_repos:
         output_repositories(clients)
@@ -92,28 +70,10 @@ def main(args=None, stdout=None, stderr=None):
     return 1 if any_error else 0
 
 
-def bzr_main(args=None):
-    if args is None:
-        args = sys.argv[1:]
-    return main(['--bzr', '--args'] + args)
-
-
 def git_main(args=None):
     if args is None:
         args = sys.argv[1:]
     return main(['--git', '--args'] + args)
-
-
-def hg_main(args=None):
-    if args is None:
-        args = sys.argv[1:]
-    return main(['--hg', '--args'] + args)
-
-
-def svn_main(args=None):
-    if args is None:
-        args = sys.argv[1:]
-    return main(['--svn', '--args'] + args)
 
 
 if __name__ == '__main__':

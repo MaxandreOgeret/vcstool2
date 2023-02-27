@@ -48,7 +48,7 @@ class TestCommands(unittest.TestCase):
     def test_custom(self):
         output = run_command(
             'custom',
-            args=['--git', '--args', 'describe', '--abbrev=0', '--tags'],
+            args=['--args', 'describe', '--abbrev=0', '--tags'],
             subfolder='immutable')
         expected = get_expected_output('custom_describe')
         self.assertEqual(output, expected)
@@ -212,12 +212,7 @@ invocation.
         output = run_command(
             'import', ['--force', '--input', REPOS_FILE, '.'])
         expected = get_expected_output('reimport_force')
-        # on Windows, the "Already on 'master'" message is after the
-        # "Your branch is up to date with ..." message, so remove it
-        # from both output and expected strings
-        if sys.platform == 'win32':
-            output = output.replace(b"Already on 'master'\r\n", b'')
-            expected = expected.replace(b"Already on 'master'\r\n", b'')
+
         # newer git versions don't append three dots after the commit hash
         assert output == expected or output == expected.replace(b'... ', b' ')
 

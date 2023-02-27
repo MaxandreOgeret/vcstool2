@@ -1,4 +1,2 @@
 The available VCS clients are:
   git
-  tar
-  zip

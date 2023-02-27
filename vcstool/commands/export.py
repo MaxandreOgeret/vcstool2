@@ -48,7 +48,6 @@ def output_export_data(result, hide_empty=False):
     try:
         lines = []
         lines.append('  %s:' % result['path'])
-        lines.append('    type: ' + result['client'].__class__.type)
         export_data = result['export_data']
         lines.append('    url: ' + export_data['url'])
         if 'version' in export_data and export_data['version']:
