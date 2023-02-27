@@ -81,18 +81,14 @@ def get_repositories(yaml_file):
 
     try:
         repositories = root['repositories']
-        return get_repos_in_vcstool_format(repositories)
+        return deserialize_vcstool_format(repositories)
     except KeyError as e:
         raise RuntimeError('Input data is not valid format: %s' % e)
     except TypeError as e:
-        # try rosinstall file format
-        try:
-            return get_repos_in_rosinstall_format(root)
-        except Exception:
-            raise RuntimeError('Input data is not valid format: %s' % e)
+        raise RuntimeError('Input data is not valid format: %s' % e)
 
 
-def get_repos_in_vcstool_format(repositories):
+def deserialize_vcstool_format(repositories):
     repos = {}
     if repositories is None:
         print(
@@ -103,39 +99,7 @@ def get_repos_in_vcstool_format(repositories):
         repo = {}
         attributes = repositories[path]
         try:
-            repo['type'] = attributes['type']
             repo['url'] = attributes['url']
-            if 'version' in attributes:
-                repo['version'] = attributes['version']
-        except KeyError as e:
-            print(
-                ansi('yellowf') + (
-                    "Repository '%s' does not provide the necessary "
-                    'information: %s' % (path, e)) + ansi('reset'),
-                file=sys.stderr)
-            continue
-        repos[path] = repo
-    return repos
-
-
-def get_repos_in_rosinstall_format(root):
-    repos = {}
-    for i, item in enumerate(root):
-        if len(item.keys()) != 1:
-            raise RuntimeError('Input data is not valid format')
-        repo = {'type': list(item.keys())[0]}
-        attributes = list(item.values())[0]
-        try:
-            path = attributes['local-name']
-        except KeyError as e:
-            print(
-                ansi('yellowf') + (
-                    'Repository #%d does not provide the necessary '
-                    'information: %s' % (i, e)) + ansi('reset'),
-                file=sys.stderr)
-            continue
-        try:
-            repo['url'] = attributes['uri']
             if 'version' in attributes:
                 repo['version'] = attributes['version']
         except KeyError as e:
