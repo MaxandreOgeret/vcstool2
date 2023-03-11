@@ -5,7 +5,7 @@ from vcstool import __version__
 install_requires = ['PyYAML', 'setuptools']
 
 setup(
-    name='vcstool2',
+    name='vcstool',
     version=__version__,
     install_requires=install_requires,
     packages=find_packages(),
@@ -45,6 +45,7 @@ setup(
             'vcs-pull = vcstool.commands.pull:main',
             'vcs-push = vcstool.commands.push:main',
             'vcs-remotes = vcstool.commands.remotes:main',
+            'vcs-rm-all = vcstool.commands.rm:main',
             'vcs-status = vcstool.commands.status:main',
             'vcs-validate = vcstool.commands.validate:main',
         ]

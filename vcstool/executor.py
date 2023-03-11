@@ -278,6 +278,7 @@ def ansi(keyword):
         'cyanf': '\033[36m',
         'redf': '\033[31m',
         'reset': '\033[0m',
+        'greenf': '\033[32m',
         'yellowf': '\033[33m',
     }
     if keyword in codes:

@@ -7,6 +7,7 @@ from .log import LogCommand
 from .pull import PullCommand
 from .push import PushCommand
 from .remotes import RemotesCommand
+from .rm import RmAllCommand
 from .status import StatusCommand
 from .validate import ValidateCommand
 
@@ -20,6 +21,7 @@ vcstool_commands = [
     PullCommand,
     PushCommand,
     RemotesCommand,
+    RmAllCommand,
     StatusCommand,
     ValidateCommand
 ]

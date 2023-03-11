@@ -104,11 +104,24 @@ The `vcs validate` command takes a YAML file which is passed in via `stdin` and 
 data of a previously-exported file or hand-generated file are piped in:
 
 ```bash
-    vcs validate < my.repos
+vcs validate < my.repos
 ```
 
 The `validate` command also supports input in the
 [rosinstall file format](http://www.ros.org/doc/independent/api/rosinstall/html/rosinstall_file_format.html).
+
+### Deleting repositories
+
+The `vcs rm-all` command takes a YAML file which is passed in via `stdin` or with its path specified via `--input`. 
+It requires either the `-f/--force` option or the `-n/--dry-run` option.
+
+```bash
+vcs rm-all -f < repos.yaml
+```
+
+```bash
+vcs rm-all -n < repos.yaml
+```
 
 ## Advanced features
 
