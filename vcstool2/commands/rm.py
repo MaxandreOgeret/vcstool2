@@ -5,9 +5,9 @@ import sys
 import urllib.request as request
 import re
 
-from vcstool.commands.import_ import file_or_url_type, get_repositories
-from vcstool.executor import ansi
-from vcstool.streams import set_streams
+from vcstool2.commands.import_ import file_or_url_type, get_repositories
+from vcstool2.executor import ansi
+from vcstool2.streams import set_streams
 
 from .command import Command, existing_dir
 

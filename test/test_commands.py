@@ -5,8 +5,8 @@ import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from vcstool.clients.git import GitClient  # noqa: E402
-from vcstool.util import rmtree  # noqa: E402
+from vcstool2.clients.git import GitClient  # noqa: E402
+from vcstool2.util import rmtree  # noqa: E402
 
 file_uri_scheme = 'file://'
 
@@ -127,7 +127,7 @@ invocation.
 
     def test_pull_api(self):
         from io import StringIO
-        from vcstool.commands.pull import main
+        from vcstool2.commands.pull import main
         stdout_stderr = StringIO()
 
         # change and restore cwd
@@ -135,7 +135,7 @@ invocation.
         os.chdir(TEST_WORKSPACE)
         try:
             # change and restore USE_COLOR flag
-            from vcstool import executor
+            from vcstool2 import executor
             use_color_bck = executor.USE_COLOR
             executor.USE_COLOR = False
             try:
@@ -239,7 +239,7 @@ invocation.
 
     def test_import_force_non_empty(self):
         workdir = os.path.join(TEST_WORKSPACE, 'force-non-empty')
-        os.makedirs(os.path.join(workdir, 'vcstool', 'not-a-git-repo'))
+        os.makedirs(os.path.join(workdir, 'vcstool2', 'not-a-git-repo'))
         try:
             output = run_command(
                 'import', ['--force', '--input', REPOS_FILE, '.'],

@@ -55,8 +55,8 @@ these dictionaries contains keys `url`, and `version`. If the `version` key is o
 being used.
 
 This results in something similar to the following for a set of two repositories
-([vcstool](https://github.com/dirk-thomas/vcstool) cloned via Git and
-[rosinstall](http://github.com/vcstools/rosinstall) checked out via Subversion):
+([vcstool](https://github.com/dirk-thomas/vcstool) and
+[vcstool2](https://github.com/MaxandreOgeret/vcstool2)):
 
 ``` yaml
 repositories:
@@ -64,8 +64,8 @@ repositories:
     url: git@github.com:dirk-thomas/vcstool.git
     version: master
   old_tools/rosinstall:
-    url: https://github.com/vcstools/rosinstall/trunk
-    version: 748
+    url: git@github.com:MaxandreOgeret/vcstool2.git
+    version: master
 ```
 
 ### Export set of repositories
@@ -107,20 +107,28 @@ data of a previously-exported file or hand-generated file are piped in:
 vcs validate < my.repos
 ```
 
-The `validate` command also supports input in the
-[rosinstall file format](http://www.ros.org/doc/independent/api/rosinstall/html/rosinstall_file_format.html).
-
 ### Deleting repositories
 
-The `vcs rm-all` command takes a YAML file which is passed in via `stdin` or with its path specified via `--input`. 
-It requires either the `-f/--force` option or the `-n/--dry-run` option.
+The `vcs rm` command takes a YAML file containing the repositories which is passed in via `stdin` or with its path
+specified via `--input`.
+
+The command performs a dry run by default, to perform the deletion use the `--force` option.
+
+This command will delete all the pulled repositories if the `--all` option is passed.  
+It can also filter the repos to delete based on their cloning path with a regex pattern passed with the `--pattern` 
+option, see the `re` module [documentation](https://docs.python.org/3/library/re.html#regular-expression-syntax) 
+for details about the syntax.
+
+To delete all:
 
 ```bash
-vcs rm-all -f < repos.yaml
+vcs rm --all --force < repos.yaml
 ```
 
+To delete all repos paths containing "foo" or "bar":
+
 ```bash
-vcs rm-all -n < repos.yaml
+vcs rm --pattern "foo|bar" --force < repos.yaml
 ```
 
 ## Advanced features
@@ -169,25 +177,25 @@ enable that feature the shell specific completion file must be sourced.
 For *bash* append the following line to the `~/.bashrc` file:
 
 ```bash
-source /usr/share/vcstool-completion/vcs.bash
+source /usr/share/vcstool2-completion/vcs.bash
 ```
 
 For *tcsh* append the following line to the `~/.cshrc` file:
 
 ```bash
-source /usr/share/vcstool-completion/vcs.tcsh
+source /usr/share/vcstool2-completion/vcs.tcsh
 ```
 
 For *zsh* append the following line to the `~/.zshrc` file:
 
 ```bash
-source /usr/share/vcstool-completion/vcs.zsh
+source /usr/share/vcstool2-completion/vcs.zsh
 ```
 
 For *fish* append the following line to the `~/.config/fishconfig.fish` file:
 
 ```bash
-source /usr/share/vcstool-completion/vcs.fish
+source /usr/share/vcstool2-completion/vcs.fish
 ```
 
 # How to contribute?

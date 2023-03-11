@@ -2,8 +2,8 @@ import argparse
 import sys
 
 from pkg_resources import load_entry_point
-from vcstool.commands import vcstool_commands
-from vcstool.streams import set_streams
+from vcstool2.commands import vcstool_commands
+from vcstool2.streams import set_streams
 
 
 def main(args=None, stdout=None, stderr=None):
@@ -55,10 +55,10 @@ def get_parser(add_help=True):
     group.add_argument(
         '--commands-descriptions', action='store_true', default=False,
         help='Output the available commands along with their descriptions')
-    from vcstool import __version__
+    from vcstool2 import __version__
     group.add_argument(
         '--version', action='version', version='%(prog)s ' + __version__,
-        help='Show the vcstool version')
+        help='Show the vcstool2 version')
     return parser
 
 
@@ -77,7 +77,7 @@ def get_entrypoint(command):
         return None
 
     return load_entry_point(
-        'vcstool', 'console_scripts', 'vcs-' + commands[0])
+        'vcstool2', 'console_scripts', 'vcs-' + commands[0])
 
 
 def get_parser_with_command_only():

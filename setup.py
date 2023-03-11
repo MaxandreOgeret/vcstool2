@@ -1,11 +1,15 @@
+from pathlib import Path
 from setuptools import find_packages
 from setuptools import setup
-from vcstool import __version__
+
+from vcstool2 import __version__
 
 install_requires = ['PyYAML', 'setuptools']
+this_directory = Path(__file__).parent
+long_description = (this_directory / "README.md").read_text()
 
 setup(
-    name='vcstool',
+    name='vcstool2',
     version=__version__,
     install_requires=install_requires,
     packages=find_packages(),
@@ -19,35 +23,35 @@ setup(
                  'Programming Language :: Python',
                  'Topic :: Software Development :: Version Control',
                  'Topic :: Utilities'],
-    description='vcstool provides a command line tool to invoke git commands on multiple repositories.',
-    long_description='vcstool2 enables batch commands on multiple different git repositories. It is a fork of Dirk '
-                     'Thomas\' vcstool',
+    description='vcstool2 provides a command line tool to invoke git commands on multiple repositories.',
+    long_description=long_description,
+    long_description_content_type='text/markdown',
     license='Apache License, Version 2.0',
     data_files=[
-        ('share/vcstool-completion', [
-            'vcstool-completion/vcs.bash',
-            'vcstool-completion/vcs.tcsh',
-            'vcstool-completion/vcs.zsh',
-            'vcstool-completion/vcs.fish'
+        ('share/vcstool2-completion', [
+            'vcstool2-completion/vcs.bash',
+            'vcstool2-completion/vcs.tcsh',
+            'vcstool2-completion/vcs.zsh',
+            'vcstool2-completion/vcs.fish'
         ])
     ],
     entry_points={
         'console_scripts': [
-            'vcs = vcstool.commands.vcs:main',
-            'vcs-branch = vcstool.commands.branch:main',
-            'vcs-custom = vcstool.commands.custom:main',
-            'vcs-diff = vcstool.commands.diff:main',
-            'vcs-export = vcstool.commands.export:main',
-            'vcs-git = vcstool.commands.custom:git_main',
-            'vcs-help = vcstool.commands.help:main',
-            'vcs-import = vcstool.commands.import_:main',
-            'vcs-log = vcstool.commands.log:main',
-            'vcs-pull = vcstool.commands.pull:main',
-            'vcs-push = vcstool.commands.push:main',
-            'vcs-remotes = vcstool.commands.remotes:main',
-            'vcs-rm-all = vcstool.commands.rm:main',
-            'vcs-status = vcstool.commands.status:main',
-            'vcs-validate = vcstool.commands.validate:main',
+            'vcs = vcstool2.commands.vcs:main',
+            'vcs-branch = vcstool2.commands.branch:main',
+            'vcs-custom = vcstool2.commands.custom:main',
+            'vcs-diff = vcstool2.commands.diff:main',
+            'vcs-export = vcstool2.commands.export:main',
+            'vcs-git = vcstool2.commands.custom:git_main',
+            'vcs-help = vcstool2.commands.help:main',
+            'vcs-import = vcstool2.commands.import_:main',
+            'vcs-log = vcstool2.commands.log:main',
+            'vcs-pull = vcstool2.commands.pull:main',
+            'vcs-push = vcstool2.commands.push:main',
+            'vcs-remotes = vcstool2.commands.remotes:main',
+            'vcs-rm = vcstool2.commands.rm:main',
+            'vcs-status = vcstool2.commands.status:main',
+            'vcs-validate = vcstool2.commands.validate:main',
         ]
     }
 )

@@ -1,7 +1,7 @@
 import os
 from typing import List
 
-from vcstool.clients import GitClient
+from vcstool2.clients import GitClient
 
 
 def find_repositories(paths: list, nested: bool = False) -> List[GitClient]:

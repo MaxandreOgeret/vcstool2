@@ -22,7 +22,7 @@ def fix_output_path(path):
 
 
 def output_repositories(clients):
-    from vcstool.streams import stdout
+    from vcstool2.streams import stdout
     ordered_clients = {client.path: client for client in clients}
     for k in sorted(ordered_clients.keys()):
         client = ordered_clients[k]
@@ -82,7 +82,7 @@ def execute_jobs(
     jobs, show_progress=False, number_of_workers=10, debug_jobs=False
 ):
     global windows_force_posix
-    from vcstool.streams import stdout
+    from vcstool2.streams import stdout
     if debug_jobs:
         logger.setLevel(logging.DEBUG)
 
@@ -223,7 +223,7 @@ class Worker(threading.Thread):
 
 
 def output_result(result, hide_empty=False):
-    from vcstool.streams import stdout
+    from vcstool2.streams import stdout
     output = result['output']
     if hide_empty and result['returncode'] is None:
         output = ''

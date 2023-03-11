@@ -1,4 +1,4 @@
-include vcstool-completion/vcs.bash vcstool-completion/vcs.tcsh vcstool-completion/vcs.zsh
-include vcstool-completion/vcs.fish
+include vcstool2-completion/vcs.bash vcstool2-completion/vcs.tcsh vcstool2-completion/vcs.zsh
+include vcstool2-completion/vcs.fish
 include test/*.repos
 include test/*.txt

@@ -4,14 +4,14 @@ from shutil import which
 import sys
 import urllib.request as request
 
-from vcstool import __version__ as vcstool_version
-from vcstool.clients import GitClient
-from vcstool.clients.vcs_base import run_command
-from vcstool.executor import ansi
-from vcstool.executor import execute_jobs
-from vcstool.executor import output_repositories
-from vcstool.executor import output_results
-from vcstool.streams import set_streams
+from vcstool2 import __version__ as vcstool_version
+from vcstool2.clients import GitClient
+from vcstool2.clients.vcs_base import run_command
+from vcstool2.executor import ansi
+from vcstool2.executor import execute_jobs
+from vcstool2.executor import output_repositories
+from vcstool2.executor import output_results
+from vcstool2.streams import set_streams
 import yaml
 
 from .command import add_common_arguments
@@ -70,7 +70,7 @@ def file_or_url_type(value):
     # use another user agent to avoid getting a 403 (forbidden) error,
     # since some websites blacklist or block unrecognized user agents
     return request.Request(
-        value, headers={'User-Agent': 'vcstool/' + vcstool_version})
+        value, headers={'User-Agent': 'vcstool2/' + vcstool_version})
 
 
 def get_repositories(yaml_file):
