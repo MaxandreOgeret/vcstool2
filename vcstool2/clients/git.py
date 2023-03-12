@@ -2,6 +2,9 @@ import os
 from shutil import which
 import subprocess
 
+from packaging.specifiers import SpecifierSet
+from packaging.version import parse as parse_version
+
 from vcstool2.executor import USE_COLOR
 
 from .vcs_base import VcsClientBase
@@ -386,7 +389,9 @@ class GitClient(VcsClientBase):
 
             if not command.shallow or version_type in (None, 'branch'):
                 cmd_clone = [GitClient._executable, 'clone', command.url, '.']
-                if version_type == 'branch':
+                if version_type == 'specifier_set':
+                    checkout_version = self._get_tag_from_spec_set(command.url, command.version)
+                elif version_type == 'branch':
                     cmd_clone += ['-b', version_name]
                     checkout_version = None
                 else:
@@ -475,6 +480,24 @@ class GitClient(VcsClientBase):
             'returncode': 0
         }
 
+    def _get_tag_from_spec_set(self, url, version):
+        specifier = SpecifierSet(version)
+        cmd = [GitClient._executable, 'ls-remote', "--tags", url]
+        result = self._run_command(cmd)
+
+        versions = []
+        for line in result["output"].splitlines():
+            version = line.split("\t")[-1].split("/")[-1]
+            try:
+                versions.append(parse_version(version))
+            except: pass
+        versions.sort(reverse=True)
+
+        for version in versions:
+            if version in specifier:
+                return str(version)
+
+
     def _get_remote_urls(self):
         cmd_remote = [GitClient._executable, 'remote', 'show']
         result_remote = self._run_command(cmd_remote)
@@ -498,7 +521,22 @@ class GitClient(VcsClientBase):
         }
 
     def _check_version_type(self, url, version):
-        # check if version starts with heads/ or tags/
+        """
+        Check the type of version provided for a given URL.
+        It returns a dictionary containing the result of the check along with the version type.
+        """
+        try:
+            specifier_set = SpecifierSet(version)
+            return {
+                'cmd': None,
+                'cwd': None,
+                'output': None,
+                'returncode': 0,
+                'version_type': "specifier_set",
+            }, version
+        except:
+            pass
+
         prefixes = {
             'heads/': 'branch',
             'tags/': 'tag',
