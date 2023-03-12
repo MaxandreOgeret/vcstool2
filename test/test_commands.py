@@ -5,10 +5,10 @@ import unittest
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
-from vcstool.clients.git import GitClient  # noqa: E402
-from vcstool.util import rmtree  # noqa: E402
+from vcstool2.clients.git import GitClient  # noqa: E402
+from vcstool2.util import rmtree  # noqa: E402
 
-file_uri_scheme = 'file://' if sys.platform != 'win32' else 'file:///'
+file_uri_scheme = 'file://'
 
 REPOS_FILE = os.path.join(os.path.dirname(__file__), 'list.repos')
 REPOS_FILE_URL = file_uri_scheme + REPOS_FILE
@@ -127,7 +127,7 @@ invocation.
 
     def test_pull_api(self):
         from io import StringIO
-        from vcstool.commands.pull import main
+        from vcstool2.commands.pull import main
         stdout_stderr = StringIO()
 
         # change and restore cwd
@@ -135,7 +135,7 @@ invocation.
         os.chdir(TEST_WORKSPACE)
         try:
             # change and restore USE_COLOR flag
-            from vcstool import executor
+            from vcstool2 import executor
             use_color_bck = executor.USE_COLOR
             executor.USE_COLOR = False
             try:
@@ -182,9 +182,6 @@ invocation.
             output = output.replace(pull_warning, '')
         # the output was retrieved through a different way here
         output = adapt_command_output(output.encode()).decode()
-        if sys.platform == 'win32':
-            # it does not include carriage return characters on Windows
-            output = output.replace('\n', '\r\n')
         expected = get_expected_output('pull').decode()
         assert output == expected
 
@@ -242,7 +239,7 @@ invocation.
 
     def test_import_force_non_empty(self):
         workdir = os.path.join(TEST_WORKSPACE, 'force-non-empty')
-        os.makedirs(os.path.join(workdir, 'vcstool', 'not-a-git-repo'))
+        os.makedirs(os.path.join(workdir, 'vcstool2', 'not-a-git-repo'))
         try:
             output = run_command(
                 'import', ['--force', '--input', REPOS_FILE, '.'],
@@ -327,6 +324,52 @@ invocation.
         expected = get_expected_output('status')
         self.assertEqual(output, expected)
 
+    def test_rm_all(self):
+        workdir = os.path.join(TEST_WORKSPACE, 'rm-all')
+        os.makedirs(workdir)
+        try:
+            run_command('import', ['--input', REPOS_FILE_URL, '.'], subfolder='rm-all')
+            self.assertEqual(['immutable', 'vcstool', 'without_version'], sorted(os.listdir(workdir)))
+            self.assertEqual(['hash', 'tag'], sorted(os.listdir(os.path.join(workdir, 'immutable'))))
+
+            run_command('rm', ['--input', REPOS_FILE_URL, "--all", "--force"], subfolder='rm-all')
+            self.assertEqual(['immutable'], os.listdir(workdir))
+            self.assertEqual([], os.listdir(os.path.join(workdir, 'immutable')))
+
+        finally:
+            rmtree(workdir)
+
+    def test_rm_pattern(self):
+        workdir = os.path.join(TEST_WORKSPACE, 'rm-pattern')
+        os.makedirs(workdir)
+        try:
+            run_command('import', ['--input', REPOS_FILE_URL, '.'], subfolder='rm-pattern')
+            self.assertEqual(['immutable', 'vcstool', 'without_version'], sorted(os.listdir(workdir)))
+            self.assertEqual(['hash', 'tag'], sorted(os.listdir(os.path.join(workdir, 'immutable'))))
+
+            run_command('rm', ['--input', REPOS_FILE_URL, "--pattern", "tag|without", "--force"],
+                        subfolder='rm-pattern')
+            self.assertEqual(['immutable', 'vcstool'], sorted(os.listdir(workdir)))
+            self.assertEqual(['hash'], os.listdir(os.path.join(workdir, 'immutable')))
+
+        finally:
+            rmtree(workdir)
+
+    def test_rm_dryrun(self):
+        workdir = os.path.join(TEST_WORKSPACE, 'rm-dryrun')
+        os.makedirs(workdir)
+        try:
+            run_command('import', ['--input', REPOS_FILE_URL, '.'], subfolder='rm-dryrun')
+            self.assertEqual(['immutable', 'vcstool', 'without_version'], sorted(os.listdir(workdir)))
+            self.assertEqual(['hash', 'tag'], sorted(os.listdir(os.path.join(workdir, 'immutable'))))
+
+            run_command('rm', ['--input', REPOS_FILE_URL, "--all"], subfolder='rm-dryrun')
+            self.assertEqual(['immutable', 'vcstool', 'without_version'], sorted(os.listdir(workdir)))
+            self.assertEqual(['hash', 'tag'], sorted(os.listdir(os.path.join(workdir, 'immutable'))))
+
+        finally:
+            rmtree(workdir)
+
 
 def run_command(command, args=None, subfolder=None):
     repo_root = os.path.dirname(os.path.dirname(__file__))
@@ -380,23 +423,6 @@ def adapt_command_output(output, cwd=None):
     # replace GitHub SSH clone URL
     output = output.replace(
         b'git@github.com:', b'https://github.com/')
-    if sys.platform == 'win32':
-        if cwd:
-            # on Windows, git prints full path to repos
-            # in some messages, so make it relative
-            cwd_abs = os.path.abspath(cwd).replace('\\', '/')
-            output = output.replace(cwd_abs.encode(), b'.')
-        # replace path separators in specific paths;
-        # this is less likely to cause wrong test results
-        paths_to_replace = [
-            (b'.\\immutable', b'./immutable'),
-            (b'.\\vcstool', b'./vcstool'),
-            (b'.\\without_version', b'./without_version'),
-            (b'\\hash', b'/hash'),
-            (b'\\tag', b'/tag'),
-        ]
-        for before, after in paths_to_replace:
-            output = output.replace(before, after)
     return output
 
 

@@ -1,12 +1,12 @@
 import argparse
 import sys
 
-from vcstool.crawler import find_repositories
-from vcstool.executor import execute_jobs
-from vcstool.executor import generate_jobs
-from vcstool.executor import output_repositories
-from vcstool.executor import output_results
-from vcstool.streams import set_streams
+from vcstool2.crawler import find_repositories
+from vcstool2.executor import execute_jobs
+from vcstool2.executor import generate_jobs
+from vcstool2.executor import output_repositories
+from vcstool2.executor import output_results
+from vcstool2.streams import set_streams
 
 from .command import add_common_arguments
 from .command import Command

@@ -1,9 +1,9 @@
 import sys
 
-from vcstool.commands.help import get_entrypoint
-from vcstool.commands.help import get_parser
-from vcstool.commands.help import main as help_main
-from vcstool.streams import set_streams
+from vcstool2.commands.help import get_entrypoint
+from vcstool2.commands.help import get_parser
+from vcstool2.commands.help import main as help_main
+from vcstool2.streams import set_streams
 
 
 def main(args=None, stdout=None, stderr=None):

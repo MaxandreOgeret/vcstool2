@@ -2,6 +2,6 @@
 
 import sys
 
-from vcstool.commands.validate import main
+from vcstool2.commands.validate import main
 
 sys.exit(main() or 0)

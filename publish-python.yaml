@@ -6,7 +6,7 @@ artifacts:
     uploads:
       - type: packagecloud
         config:
-          repository: dirk-thomas/vcstool
+          repository: MaxandreOgeret/vcstool2
           distributions:
             - ubuntu:bionic
             - ubuntu:focal
