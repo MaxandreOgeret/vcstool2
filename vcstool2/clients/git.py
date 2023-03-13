@@ -289,7 +289,10 @@ class GitClient(VcsClientBase):
             if command.skip_existing:
                 checkout_version = None
             elif command.version:
-                checkout_version = command.version
+                if self.is_spec_set(command.version):
+                    checkout_version = self._get_tag_from_spec_set(command.url, command.version)
+                else:
+                    checkout_version = command.version
             else:
                 # determine remote HEAD branch
                 cmd_remote = [GitClient._executable, 'remote', 'show', remote]
@@ -480,6 +483,13 @@ class GitClient(VcsClientBase):
             'returncode': 0
         }
 
+    def is_spec_set(self, version):
+        try:
+            SpecifierSet(version)
+            return True
+        except:
+            return False
+
     def _get_tag_from_spec_set(self, url, version):
         specifier = SpecifierSet(version)
         cmd = [GitClient._executable, 'ls-remote', "--tags", url]
@@ -525,8 +535,7 @@ class GitClient(VcsClientBase):
         Check the type of version provided for a given URL.
         It returns a dictionary containing the result of the check along with the version type.
         """
-        try:
-            specifier_set = SpecifierSet(version)
+        if self.is_spec_set(version):
             return {
                 'cmd': None,
                 'cwd': None,
@@ -534,8 +543,6 @@ class GitClient(VcsClientBase):
                 'returncode': 0,
                 'version_type': "specifier_set",
             }, version
-        except:
-            pass
 
         prefixes = {
             'heads/': 'branch',
