@@ -3,8 +3,6 @@ import subprocess
 import sys
 import unittest
 
-from vcstool2.clients import GitClient
-
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 from vcstool2.clients.git import GitClient  # noqa: E402

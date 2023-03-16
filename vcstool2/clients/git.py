@@ -499,7 +499,7 @@ class GitClient(VcsClientBase):
         try:
             SpecifierSet(version)
             return True
-        except:
+        except Exception:
             return False
 
     def _get_tag_from_spec_set(self, url, version):
@@ -512,13 +512,13 @@ class GitClient(VcsClientBase):
             version = line.split("\t")[-1].split("/")[-1]
             try:
                 versions.append(parse_version(version))
-            except: pass
+            except Exception:
+                pass
         versions.sort(reverse=True)
 
         for version in versions:
             if version in specifier:
                 return str(version)
-
 
     def _get_remote_urls(self):
         cmd_remote = [GitClient._executable, 'remote', 'show']
