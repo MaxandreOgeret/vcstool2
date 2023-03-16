@@ -3,6 +3,8 @@ import subprocess
 import sys
 import unittest
 
+from vcstool2.clients import GitClient
+
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 from vcstool2.clients.git import GitClient  # noqa: E402
@@ -31,7 +33,7 @@ class TestCommands(unittest.TestCase):
             expected = get_expected_output('import')
             # newer git versions don't append three dots after the commit hash
             assert output == expected or \
-                output == expected.replace(b'... ', b' ')
+                   output == expected.replace(b'... ', b' ')
         except Exception:
             cls.tearDownClass()
             raise
@@ -145,8 +147,8 @@ invocation.
                 os.environ.update(
                     LANG='en_US.UTF-8',
                     PYTHONPATH=(
-                        os.path.dirname(os.path.dirname(__file__)) +
-                        os.pathsep + os.environ.get('PYTHONPATH', '')))
+                            os.path.dirname(os.path.dirname(__file__)) +
+                            os.pathsep + os.environ.get('PYTHONPATH', '')))
                 try:
                     rc = main(
                         args=['--workers', '1'],
@@ -247,8 +249,8 @@ invocation.
             expected = get_expected_output('import')
             # newer git versions don't append ... after the commit hash
             assert (
-                output == expected or
-                output == expected.replace(b'... ', b' '))
+                    output == expected or
+                    output == expected.replace(b'... ', b' '))
         finally:
             rmtree(workdir)
 
@@ -266,8 +268,8 @@ invocation.
             expected = get_expected_output('import_shallow')
             # newer git versions don't append ... after the commit hash
             assert (
-                output == expected or
-                output == expected.replace(b'... ', b' '))
+                    output == expected or
+                    output == expected.replace(b'... ', b' '))
 
             # check that repository history has only one commit
             output = subprocess.check_output(
@@ -291,8 +293,49 @@ invocation.
             expected = get_expected_output('import')
             # newer git versions don't append ... after the commit hash
             assert (
-                output == expected or
-                output == expected.replace(b'... ', b' '))
+                    output == expected or
+                    output == expected.replace(b'... ', b' '))
+        finally:
+            rmtree(workdir)
+
+    def test_import_range(self):
+        workdir = os.path.join(TEST_WORKSPACE, 'import-range')
+        os.makedirs(workdir)
+        repos_file = os.path.join(os.path.dirname(__file__), 'range.repos')
+        repos_file_url = file_uri_scheme + repos_file
+        try:
+            run_command(
+                'import', ['--input', repos_file_url, '.'],
+                subfolder='import-range')
+            output = run_command('custom', [workdir, "--args", "describe", "--tags"]).decode()
+            self.assertEqual(output.splitlines()[1], '0.4.2')
+        finally:
+            rmtree(workdir)
+
+    def test_import_range_shallow(self):
+        workdir = os.path.join(TEST_WORKSPACE, 'import-range-shallow')
+        os.makedirs(workdir)
+        repos_file = os.path.join(os.path.dirname(__file__), 'range.repos')
+        repos_file_url = file_uri_scheme + repos_file
+        try:
+            run_command(
+                'import', ['--input', repos_file_url, '--shallow', '.'],
+                subfolder='import-range-shallow')
+            output = run_command('custom', [workdir, "--args", "describe", "--tags"]).decode()
+            self.assertEqual(output.splitlines()[1], '0.4.2')
+        finally:
+            rmtree(workdir)
+
+    def test_import_range_notag(self):
+        workdir = os.path.join(TEST_WORKSPACE, 'import-range')
+        os.makedirs(workdir)
+        repos_file = os.path.join(os.path.dirname(__file__), 'range_notag.repos')
+        repos_file_url = file_uri_scheme + repos_file
+        try:
+            with self.assertRaises(subprocess.CalledProcessError):
+                run_command(
+                    'import', ['--input', repos_file_url, '.'],
+                    subfolder='import-range')
         finally:
             rmtree(workdir)
 

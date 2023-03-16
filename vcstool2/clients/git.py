@@ -394,6 +394,13 @@ class GitClient(VcsClientBase):
                 cmd_clone = [GitClient._executable, 'clone', command.url, '.']
                 if version_type == 'specifier_set':
                     checkout_version = self._get_tag_from_spec_set(command.url, command.version)
+                    if checkout_version is None:
+                        return {
+                            'cmd': '',
+                            'cwd': self.path,
+                            'output': f"Specifier set {command.version} could not resolve to a valid remote tag",
+                            'returncode': 1
+                        }
                 elif version_type == 'branch':
                     cmd_clone += ['-b', version_name]
                     checkout_version = None
@@ -431,6 +438,11 @@ class GitClient(VcsClientBase):
                 cmd_fetch = [GitClient._executable, 'fetch', 'origin']
                 if version_type == 'hash':
                     cmd_fetch.append(command.version)
+                elif version_type == 'specifier_set':
+                    tag = self._get_tag_from_spec_set(command.url, command.version)
+                    cmd_fetch.append(
+                        'refs/tags/%s:refs/tags/%s' %
+                        (tag, tag))
                 elif version_type == 'tag':
                     cmd_fetch.append(
                         'refs/tags/%s:refs/tags/%s' %
@@ -445,7 +457,7 @@ class GitClient(VcsClientBase):
                 cmd += ' && ' + ' '.join(cmd_fetch)
                 output = '\n'.join([output, result_fetch['output']])
 
-                checkout_version = command.version
+                checkout_version = command.version if not version_type == 'specifier_set' else tag
 
         if checkout_version:
             cmd_checkout = [
