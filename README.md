@@ -19,7 +19,7 @@ are:
 
 ## Python support
 
-This package supports python >= 3.4.
+This package supports python >= 3.5.
 
 ## How does it work?
 
