@@ -19,7 +19,7 @@ are:
 
 ## Python support
 
-This package supports python >= 3.4.
+This package supports python >= 3.5.
 
 ## How does it work?
 
@@ -130,6 +130,23 @@ To delete all repos paths containing "foo" or "bar":
 ```bash
 vcs rm --pattern "foo|bar" --force < repos.yaml
 ```
+
+### Version ranges
+
+Vcstool2 supports version ranges in the yaml repository file, E.g.
+
+```yaml
+repositories:
+  vcstool2_0:
+    url: https://github.com/MaxandreOgeret/vcstool2.git
+    version: ">0.4.1,<0.4.3"
+  vcstool2_1:
+    url: https://github.com/MaxandreOgeret/vcstool2.git
+    version: "==0.4.*"
+```
+
+The version ranges syntax is based [PEP440](https://peps.python.org/pep-0440/#version-specifiers), and is powered by the
+[packaging](https://packaging.pypa.io/en/stable/specifiers.html) package.
 
 ## Advanced features
 

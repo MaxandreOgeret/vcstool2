@@ -4,7 +4,7 @@ from setuptools import setup
 
 from vcstool2 import __version__
 
-install_requires = ['PyYAML', 'setuptools']
+install_requires = ['PyYAML', 'setuptools', 'packaging']
 this_directory = Path(__file__).parent
 long_description = (this_directory / "README.md").read_text()
 
