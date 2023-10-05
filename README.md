@@ -1,7 +1,6 @@
 # What is vcstool2?
 
-Vcstool2 is an attempt at continuing the development of [vcstool](https://github.com/dirk-thomas/vcstool)
-by [Dirk Thomas](https://github.com/dirk-thomas).
+**ℹ️ This project is a fork of [vcstool](https://github.com/dirk-thomas/vcstool) originally created by Dirk Thomas. All credits for the original work go to Dirk Thomas. ℹ️**
 
 Vcstool2 is a version control system (VCS) tool, designed to make working
 with multiple repositories easier.
