@@ -18,7 +18,7 @@ are:
 
 ## Python support
 
-This package supports python >= 3.5.
+This package supports Python >= 3.5, and is tested on Python (3.7 -> 3.12).
 
 ## How does it work?
 

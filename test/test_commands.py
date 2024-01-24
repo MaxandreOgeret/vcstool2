@@ -429,7 +429,7 @@ def run_command(command, args=None, subfolder=None):
 
 
 def adapt_command_output(output, cwd=None):
-    assert type(output) == bytes
+    assert type(output) is bytes
     # replace message from older git versions
     output = output.replace(
         b'git checkout -b new_branch_name',
