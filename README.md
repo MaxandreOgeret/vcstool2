@@ -144,7 +144,7 @@ repositories:
     version: "==0.4.*"
 ```
 
-The version ranges syntax is based [PEP440](https://peps.python.org/pep-0440/#version-specifiers), and is powered by the
+The version ranges syntax follows [Python Packaging Authority Guidelines](https://peps.python.org/pep-0440/#version-specifiers), and is powered by the
 [packaging](https://packaging.pypa.io/en/stable/specifiers.html) package.
 
 ## Advanced features
