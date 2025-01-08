@@ -36,12 +36,14 @@ class VcsClientBase(object):
     def _run_command(self, cmd, env=None, retry=0):
         for i in range(retry + 1):
             result = run_command(cmd, os.path.abspath(self.path), env=env)
+            if i==0:
+                first_result = result
             if not result['returncode']:
                 # return successful result
                 break
             if i >= retry:
                 # return the failure after retries
-                break
+                return first_result
             # increasing sleep before each retry
             time.sleep(i + 1)
         return result
