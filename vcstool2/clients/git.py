@@ -25,8 +25,7 @@ class GitClient(VcsClientBase):
             prefix = b'git version '
             assert output.startswith(prefix)
             output = output[len(prefix):].split(maxsplit=1)[0]
-            cls._git_version = [
-                int(x) for x in output.split(b'.') if x != b'windows']
+            cls._git_version = [int(x) for x in output.split(b'.')[:3]]
         return cls._git_version
 
     @staticmethod
